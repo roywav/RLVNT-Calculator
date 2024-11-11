@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Solar Commission Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        .section { margin-bottom: 30px; }
+        h2 { color: #333; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; }
+        input[type="number"] { width: 100%; padding: 8px; margin-top: 5px; }
+        .result { font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Comprehensive Solar Commission Calculator</h1>
+
+    <!-- Section: Freedom -->
+    <div class="section" id="freedomSection">
+        <h2>Freedom</h2>
+        <div class="input-group">
+            <label for="freedomSystemCost">System Cost ($):</label>
+            <input type="number" id="freedomSystemCost" placeholder="Enter system cost">
+        </div>
+        <div class="input-group">
+            <label for="freedomAdders">Adders Total ($):</label>
+            <input type="number" id="freedomAdders" placeholder="Enter adders total">
+        </div>
+        <button onclick="calculateFreedom()">Calculate Freedom</button>
+        <div class="result" id="freedomResult"></div>
+    </div>
+
+    <!-- Section: SMP -->
+    <div class="section" id="smpSection">
+        <h2>SMP</h2>
+        <div class="input-group">
+            <label for="smpSystemCost">System Cost ($):</label>
+            <input type="number" id="smpSystemCost" placeholder="Enter system cost">
+        </div>
+        <div class="input-group">
+            <label for="smpAdders">Adders Total ($):</label>
+            <input type="number" id="smpAdders" placeholder="Enter adders total">
+        </div>
+        <button onclick="calculateSMP()">Calculate SMP</button>
+        <div class="result" id="smpResult"></div>
+    </div>
+
+    <!-- Section: Empower -->
+    <div class="section" id="empowerSection">
+        <h2>Empower</h2>
+        <div class="input-group">
+            <label for="empowerSystemCost">System Cost ($):</label>
+            <input type="number" id="empowerSystemCost" placeholder="Enter system cost">
+        </div>
+        <div class="input-group">
+            <label for="empowerAdders">Adders Total ($):</label>
+            <input type="number" id="empowerAdders" placeholder="Enter adders total">
+        </div>
+        <button onclick="calculateEmpower()">Calculate Empower</button>
+        <div class="result" id="empowerResult"></div>
+    </div>
+
+    <!-- Additional sections for other sheets, like 2.9%, 3.5%, 3.9%, LOAN, and HDM -->
+
+</div>
+
+<script>
+    // Function to calculate for Freedom
+    function calculateFreedom() {
+        const systemCost = parseFloat(document.getElementById('freedomSystemCost').value) || 0;
+        const adders = parseFloat(document.getElementById('freedomAdders').value) || 0;
+        const systemSize = 8;  // Example system size, adjust if needed
+        const netPpw = systemCost / systemSize;
+        const commission = (systemCost - adders) * 0.3;
+
+        document.getElementById('freedomResult').innerHTML = `
+            <p>Net PPW: $${netPpw.toFixed(2)}</p>
+            <p>System Cost After Adders: $${(systemCost - adders).toFixed(2)}</p>
+            <p>Commission: $${commission.toFixed(2)}</p>
+        `;
+    }
+
+    // Function to calculate for SMP
+    function calculateSMP() {
+        const systemCost = parseFloat(document.getElementById('smpSystemCost').value) || 0;
+        const adders = parseFloat(document.getElementById('smpAdders').value) || 0;
+        const systemSize = 10;  // Adjust as needed
+        const netPpw = systemCost / systemSize;
+        const commission = (systemCost - adders) * 0.35;
+
+        document.getElementById('smpResult').innerHTML = `
+            <p>Net PPW: $${netPpw.toFixed(2)}</p>
+            <p>System Cost After Adders: $${(systemCost - adders).toFixed(2)}</p>
+            <p>Commission: $${commission.toFixed(2)}</p>
+        `;
+    }
+
+    // Function to calculate for Empower
+    function calculateEmpower() {
+        const systemCost = parseFloat(document.getElementById('empowerSystemCost').value) || 0;
+        const adders = parseFloat(document.getElementById('empowerAdders').value) || 0;
+        const systemSize = 12.3;  // Example system size, adjust if needed
+        const netPpw = systemCost / systemSize;
+        const commission = (systemCost - adders) * 0.28;
+
+        document.getElementById('empowerResult').innerHTML = `
+            <p>Net PPW: $${netPpw.toFixed(2)}</p>
+            <p>System Cost After Adders: $${(systemCost - adders).toFixed(2)}</p>
+            <p>Commission: $${commission.toFixed(2)}</p>
+        `;
+    }
+
+    // Additional functions for other sections, like 2.9%, 3.5%, 3.9%, LOAN, and HDM
+</script>
+
+</body>
+</html>
