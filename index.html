@@ -15,7 +15,7 @@
         h1 {
             text-align: center;
         }
-        label, input, select {
+        label, input {
             display: block;
             margin: 10px 0;
         }
@@ -63,6 +63,16 @@
         .dropdown-container.active {
             display: block;
         }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .checkbox-group label {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -87,59 +97,36 @@
         <div class="tab" onclick="showTab('FreedomForever')">Freedom Forever</div>
     </div>
 
-    <!-- SMP Tab Dropdown -->
-    <div id="SMP" class="dropdown-container active">
-        <label>Select Batteries & Adders:</label>
-        <select multiple onchange="updateAddersBattery()">
-            <option value="2500">MPU - 2500</option>
-            <option value="5000">Span MPU - 5000</option>
-            <option value="750">D-rate - 750</option>
-            <option value="500">Sub panel - basic - 500</option>
-            <option value="1500">Sub panel - complex - 1500</option>
-            <option value="1500">EV charger - 1500</option>
-            <option value="500">EV outlet - 500</option>
-            <option value="1082.4">IQ 8 upgrade - 1082.4</option>
-            <option value="9300">10p - no back up - 9300</option>
-            <!-- Add the rest of the items for SMP as needed -->
-        </select>
+    <!-- SMP Tab Checkbox Group -->
+    <div id="SMP" class="dropdown-container active checkbox-group">
+        <label><input type="checkbox" value="2500" onchange="updateAddersBattery()"> MPU - 2500</label>
+        <label><input type="checkbox" value="5000" onchange="updateAddersBattery()"> Span MPU - 5000</label>
+        <label><input type="checkbox" value="750" onchange="updateAddersBattery()"> D-rate - 750</label>
+        <!-- Add the remaining SMP options as checkboxes -->
     </div>
 
-    <!-- EmPower Tab Dropdown -->
-    <div id="EmPower" class="dropdown-container">
-        <label>Select Batteries & Adders:</label>
-        <select multiple onchange="updateAddersBattery()">
-            <option value="5000">5p - 5000</option>
-            <option value="9000">10p - 9000</option>
-            <option value="13000">15p - 13000</option>
-            <option value="17000">20p - 17000</option>
-            <option value="21000">25p - 21000</option>
-            <option value="3000">MPU - 3000</option>
-            <!-- Add the rest of the items for EmPower as needed -->
-        </select>
+    <!-- EmPower Tab Checkbox Group -->
+    <div id="EmPower" class="dropdown-container checkbox-group">
+        <label><input type="checkbox" value="5000" onchange="updateAddersBattery()"> 5p - 5000</label>
+        <label><input type="checkbox" value="9000" onchange="updateAddersBattery()"> 10p - 9000</label>
+        <label><input type="checkbox" value="13000" onchange="updateAddersBattery()"> 15p - 13000</label>
+        <!-- Add the remaining EmPower options as checkboxes -->
     </div>
 
-    <!-- Trust Tab Dropdown -->
-    <div id="Trust" class="dropdown-container">
-        <label>Select Batteries & Adders:</label>
-        <select multiple onchange="updateAddersBattery()">
-            <option value="9000">Tesla Power Wall 3 - 9000</option>
-            <option value="8500">Additional Power Wall 3 - 8500</option>
-            <option value="2800">MPU - 2800</option>
-            <option value="2500">EG4 BU - 2500</option>
-            <!-- Add the rest of the items for Trust as needed -->
-        </select>
+    <!-- Trust Tab Checkbox Group -->
+    <div id="Trust" class="dropdown-container checkbox-group">
+        <label><input type="checkbox" value="9000" onchange="updateAddersBattery()"> Tesla Power Wall 3 - 9000</label>
+        <label><input type="checkbox" value="8500" onchange="updateAddersBattery()"> Additional Power Wall 3 - 8500</label>
+        <label><input type="checkbox" value="2800" onchange="updateAddersBattery()"> MPU - 2800</label>
+        <!-- Add the remaining Trust options as checkboxes -->
     </div>
 
-    <!-- Freedom Forever Tab Dropdown -->
-    <div id="FreedomForever" class="dropdown-container">
-        <label>Select Batteries & Adders:</label>
-        <select multiple onchange="updateAddersBattery()">
-            <option value="5000">5P <= 4kw no backup - 5000</option>
-            <option value="9750">10P <= 4kw no backup - 9750</option>
-            <option value="800">Enphase IQ8 upgrade - 800</option>
-            <option value="1500">Tesla wall charger - 1500</option>
-            <!-- Add the rest of the items for Freedom Forever as needed -->
-        </select>
+    <!-- Freedom Forever Tab Checkbox Group -->
+    <div id="FreedomForever" class="dropdown-container checkbox-group">
+        <label><input type="checkbox" value="5000" onchange="updateAddersBattery()"> 5P <= 4kw no backup - 5000</label>
+        <label><input type="checkbox" value="9750" onchange="updateAddersBattery()"> 10P <= 4kw no backup - 9750</label>
+        <label><input type="checkbox" value="9000" onchange="updateAddersBattery()"> 5P > 4kw no backup - 9000</label>
+        <!-- Add the remaining Freedom Forever options as checkboxes -->
     </div>
 
     <button onclick="calculateCommission()">Calculate Commission</button>
@@ -160,10 +147,10 @@
 
         function updateAddersBattery() {
             let total = 0;
-            const activeDropdown = document.querySelector(".dropdown-container.active select");
-            for (const option of activeDropdown.selectedOptions) {
-                total += parseFloat(option.value);
-            }
+            const activeCheckboxes = document.querySelectorAll(".dropdown-container.active input[type='checkbox']:checked");
+            activeCheckboxes.forEach(checkbox => {
+                total += parseFloat(checkbox.value);
+            });
             document.getElementById("addersBattery").value = total;
         }
 
