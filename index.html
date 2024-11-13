@@ -5,154 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RLVNT Commission Calculator</title>
     <style>
-        /* Basic styling for layout and dropdowns */
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 90%;
             max-width: 600px;
-            background-color: #fff;
+            margin: auto;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #f4f4f4;
         }
         h1 {
             text-align: center;
-            margin-bottom: 20px;
         }
-        .tab {
-            display: none;
-        }
-        .tab-button {
-            padding: 10px;
-            margin: 5px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
-        }
-        .tab-button.active {
-            background-color: #0056b3;
-        }
-        .dropdown {
-            margin-top: 20px;
-        }
-        .dropdown label {
+        label, input, select {
             display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
+            margin: 10px 0;
         }
-        .dropdown select {
+        input[type="number"] {
             width: 100%;
             padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005bb5;
         }
         .result {
             margin-top: 20px;
-            font-size: 18px;
             font-weight: bold;
+            font-size: 1.2em;
             text-align: center;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .tab {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #ccc;
+            border: 1px solid #999;
+        }
+        .tab.active {
+            background-color: #0073e6;
+            color: white;
+        }
+        .dropdown-container {
+            display: none;
+        }
+        .dropdown-container.active {
+            display: block;
         }
     </style>
 </head>
 <body>
+    <h1>RLVNT Commission Calculator</h1>
 
-<div class="container">
-    <h1>Solar Commission Calculator</h1>
-    
-    <!-- Tabs -->
-    <div>
-        <button class="tab-button" onclick="showTab('smp')">SMP</button>
-        <button class="tab-button" onclick="showTab('empower')">EmPower</button>
-        <button class="tab-button" onclick="showTab('trust')">Trust</button>
-        <button class="tab-button" onclick="showTab('freedom')">Freedom Forever</button>
-    </div>
-    
-    <!-- SMP Dropdown -->
-    <div id="smp" class="tab">
-        <div class="dropdown">
-            <label>Select Batteries and Adders</label>
-            <select multiple id="smp-options" onchange="updateTotal('smp')">
-                <option value="2500">MPU - 2500</option>
-                <!-- Additional options for SMP based on your list -->
-            </select>
-        </div>
-    </div>
-    
-    <!-- EmPower Dropdown -->
-    <div id="empower" class="tab">
-        <div class="dropdown">
-            <label>Select Batteries and Adders</label>
-            <select multiple id="empower-options" onchange="updateTotal('empower')">
-                <option value="3000">MPU - 3000</option>
-                <!-- Additional options for EmPower based on your list -->
-            </select>
-        </div>
-    </div>
-    
-    <!-- Trust Dropdown -->
-    <div id="trust" class="tab">
-        <div class="dropdown">
-            <label>Select Batteries and Adders</label>
-            <select multiple id="trust-options" onchange="updateTotal('trust')">
-                <option value="9000">Tesla Power Wall 3 - 9000</option>
-                <option value="8500">Additional Power Wall 3 - 8500</option>
-                <option value="4500">Enphase 5P - 4500</option>
-                <option value="9000">EG4 - 9000</option>
-                <option value="2800">MPU - 2800</option>
-                <option value="2500">EG4 BU - 2500</option>
-                <!-- Additional options for Trust as required -->
-            </select>
-        </div>
-    </div>
-    
-    <!-- Freedom Forever Dropdown -->
-    <div id="freedom" class="tab">
-        <div class="dropdown">
-            <label>Select Batteries and Adders</label>
-            <select multiple id="freedom-options" onchange="updateTotal('freedom')">
-                <option value="3500">MPU - 3500</option>
-                <!-- Additional options for Freedom Forever based on your list -->
-            </select>
-        </div>
-    </div>
-    
-    <div class="result" id="total">Batteries & Adders Total: $0</div>
-</div>
+    <label for="systemSize">System Size (kW):</label>
+    <input type="number" id="systemSize" placeholder="Enter system size in kW" required>
 
-<script>
-    // Function to show selected tab
-    function showTab(tabId) {
-        document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
-        document.getElementById(tabId).style.display = 'block';
-        
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
-    }
+    <label for="ppw">Price per Watt (PPW):</label>
+    <input type="number" id="ppw" placeholder="Enter price per watt" required>
 
-    // Function to update total
-    function updateTotal(tabId) {
-        const select = document.getElementById(`${tabId}-options`);
-        let total = 0;
-        for (const option of select.selectedOptions) {
-            total += parseFloat(option.value);
+    <label for="addersBattery">Adders & Battery Cost:</label>
+    <input type="number" id="addersBattery" placeholder="Total adders & battery cost" required readonly>
+
+    <label for="redline">Redline:</label>
+    <input type="number" id="redline" placeholder="Enter redline value" required>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('SMP')">SMP</div>
+        <div class="tab" onclick="showTab('EmPower')">EmPower</div>
+        <div class="tab" onclick="showTab('Trust')">Trust</div>
+        <div class="tab" onclick="showTab('FreedomForever')">Freedom Forever</div>
+    </div>
+
+    <div id="SMP" class="dropdown-container active">
+        <label>Select Batteries & Adders:</label>
+        <select multiple onchange="updateAddersBattery()">
+            <!-- Batteries and adders for SMP -->
+            <option value="5000">5p - 5000</option>
+            <option value="9000">10p - 9000</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+
+    <div id="EmPower" class="dropdown-container">
+        <label>Select Batteries & Adders:</label>
+        <select multiple onchange="updateAddersBattery()">
+            <option value="5000">5p - 5000</option>
+            <option value="9000">10p - 9000</option>
+            <option value="3000">MPU - 3000</option>
+            <option value="750">Sub-panel - 750</option>
+            <option value="750">Derate - 750</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+
+    <div id="Trust" class="dropdown-container">
+        <label>Select Batteries & Adders:</label>
+        <select multiple onchange="updateAddersBattery()">
+            <option value="9000">Tesla Power Wall 3 - 9000</option>
+            <option value="8500">Additional Power Wall 3 - 8500</option>
+            <option value="4500">Enphase 5P - 4500</option>
+            <option value="2800">MPU - 2800</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+
+    <div id="FreedomForever" class="dropdown-container">
+        <label>Select Batteries & Adders:</label>
+        <select multiple onchange="updateAddersBattery()">
+            <option value="5000">5P <= 4kw no backup - 5000</option>
+            <option value="9750">10P <= 4kw no backup - 9750</option>
+            <option value="800">Enphase IQ8 upgrade - 800</option>
+            <option value="1000">Critter guard - 1000</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+
+    <button onclick="calculateCommission()">Calculate Commission</button>
+
+    <div class="result" id="result">Commission: $0.00</div>
+
+    <script>
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll(".tab");
+            const dropdowns = document.querySelectorAll(".dropdown-container");
+
+            tabs.forEach(tab => tab.classList.remove("active"));
+            dropdowns.forEach(dropdown => dropdown.classList.remove("active"));
+
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add("active");
+            document.getElementById(tabId).classList.add("active");
         }
-        document.getElementById('total').innerText = `Batteries & Adders Total: $${total.toFixed(2)}`;
-    }
 
-    // Initialize with SMP tab open
-    showTab('smp');
-</script>
+        function updateAddersBattery() {
+            let total = 0;
+            const activeDropdown = document.querySelector(".dropdown-container.active select");
+            for (const option of activeDropdown.selectedOptions) {
+                total += parseFloat(option.value);
+            }
+            document.getElementById("addersBattery").value = total;
+        }
 
+        function calculateCommission() {
+            const systemSize = parseFloat(document.getElementById("systemSize").value);
+            const ppw = parseFloat(document.getElementById("ppw").value);
+            const addersBattery = parseFloat(document.getElementById("addersBattery").value);
+            const redline = parseFloat(document.getElementById("redline").value);
+
+            if (isNaN(systemSize) || isNaN(ppw) || isNaN(addersBattery) || isNaN(redline)) {
+                alert("Please enter valid numbers in all fields.");
+                return;
+            }
+
+            const netPPW = systemSize * ppw;
+            const systemCost = netPPW * 1000 - addersBattery;
+            const sum = (systemCost / systemSize / 1000) - redline;
+            const commission = sum * 1000 * systemSize;
+
+            document.getElementById("result").textContent = `Commission: $${commission.toFixed(2)}`;
+        }
+    </script>
 </body>
 </html>
