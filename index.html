@@ -3,119 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehensive Solar Commission Calculator</title>
+    <title>RLVNT Commission Calculator</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; padding: 20px; }
-        .section { margin-bottom: 30px; }
-        h2 { color: #333; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; }
-        input[type="number"] { width: 100%; padding: 8px; margin-top: 5px; }
-        .result { font-weight: bold; margin-top: 20px; }
+        /* Basic styling for layout and dropdowns */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .tab {
+            display: none;
+        }
+        .tab-button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .tab-button.active {
+            background-color: #0056b3;
+        }
+        .dropdown {
+            margin-top: 20px;
+        }
+        .dropdown label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .dropdown select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Comprehensive Solar Commission Calculator</h1>
-
-    <!-- Section: Freedom -->
-    <div class="section" id="freedomSection">
-        <h2>Freedom</h2>
-        <div class="input-group">
-            <label for="freedomSystemCost">System Cost ($):</label>
-            <input type="number" id="freedomSystemCost" placeholder="Enter system cost">
-        </div>
-        <div class="input-group">
-            <label for="freedomAdders">Adders Total ($):</label>
-            <input type="number" id="freedomAdders" placeholder="Enter adders total">
-        </div>
-        <button onclick="calculateFreedom()">Calculate Freedom</button>
-        <div class="result" id="freedomResult"></div>
+    <h1>Solar Commission Calculator</h1>
+    
+    <!-- Tabs -->
+    <div>
+        <button class="tab-button" onclick="showTab('smp')">SMP</button>
+        <button class="tab-button" onclick="showTab('empower')">EmPower</button>
+        <button class="tab-button" onclick="showTab('trust')">Trust</button>
+        <button class="tab-button" onclick="showTab('freedom')">Freedom Forever</button>
     </div>
-
-    <!-- Section: SMP -->
-    <div class="section" id="smpSection">
-        <h2>SMP</h2>
-        <div class="input-group">
-            <label for="smpSystemCost">System Cost ($):</label>
-            <input type="number" id="smpSystemCost" placeholder="Enter system cost">
+    
+    <!-- SMP Dropdown -->
+    <div id="smp" class="tab">
+        <div class="dropdown">
+            <label>Select Batteries and Adders</label>
+            <select multiple id="smp-options" onchange="updateTotal('smp')">
+                <option value="2500">MPU - 2500</option>
+                <!-- Additional options for SMP based on your list -->
+            </select>
         </div>
-        <div class="input-group">
-            <label for="smpAdders">Adders Total ($):</label>
-            <input type="number" id="smpAdders" placeholder="Enter adders total">
-        </div>
-        <button onclick="calculateSMP()">Calculate SMP</button>
-        <div class="result" id="smpResult"></div>
     </div>
-
-    <!-- Section: Empower -->
-    <div class="section" id="empowerSection">
-        <h2>Empower</h2>
-        <div class="input-group">
-            <label for="empowerSystemCost">System Cost ($):</label>
-            <input type="number" id="empowerSystemCost" placeholder="Enter system cost">
+    
+    <!-- EmPower Dropdown -->
+    <div id="empower" class="tab">
+        <div class="dropdown">
+            <label>Select Batteries and Adders</label>
+            <select multiple id="empower-options" onchange="updateTotal('empower')">
+                <option value="3000">MPU - 3000</option>
+                <!-- Additional options for EmPower based on your list -->
+            </select>
         </div>
-        <div class="input-group">
-            <label for="empowerAdders">Adders Total ($):</label>
-            <input type="number" id="empowerAdders" placeholder="Enter adders total">
-        </div>
-        <button onclick="calculateEmpower()">Calculate Empower</button>
-        <div class="result" id="empowerResult"></div>
     </div>
-
-    <!-- Additional sections for other sheets, like 2.9%, 3.5%, 3.9%, LOAN, and HDM -->
-
+    
+    <!-- Trust Dropdown -->
+    <div id="trust" class="tab">
+        <div class="dropdown">
+            <label>Select Batteries and Adders</label>
+            <select multiple id="trust-options" onchange="updateTotal('trust')">
+                <option value="9000">Tesla Power Wall 3 - 9000</option>
+                <option value="8500">Additional Power Wall 3 - 8500</option>
+                <option value="4500">Enphase 5P - 4500</option>
+                <option value="9000">EG4 - 9000</option>
+                <option value="2800">MPU - 2800</option>
+                <option value="2500">EG4 BU - 2500</option>
+                <!-- Additional options for Trust as required -->
+            </select>
+        </div>
+    </div>
+    
+    <!-- Freedom Forever Dropdown -->
+    <div id="freedom" class="tab">
+        <div class="dropdown">
+            <label>Select Batteries and Adders</label>
+            <select multiple id="freedom-options" onchange="updateTotal('freedom')">
+                <option value="3500">MPU - 3500</option>
+                <!-- Additional options for Freedom Forever based on your list -->
+            </select>
+        </div>
+    </div>
+    
+    <div class="result" id="total">Batteries & Adders Total: $0</div>
 </div>
 
 <script>
-    // Function to calculate for Freedom
-    function calculateFreedom() {
-        const systemCost = parseFloat(document.getElementById('freedomSystemCost').value) || 0;
-        const adders = parseFloat(document.getElementById('freedomAdders').value) || 0;
-        const systemSize = 8;  // Example system size, adjust if needed
-        const netPpw = systemCost / systemSize;
-        const commission = (systemCost - adders) * 0.3;
-
-        document.getElementById('freedomResult').innerHTML = `
-            <p>Net PPW: $${netPpw.toFixed(2)}</p>
-            <p>System Cost After Adders: $${(systemCost - adders).toFixed(2)}</p>
-            <p>Commission: $${commission.toFixed(2)}</p>
-        `;
+    // Function to show selected tab
+    function showTab(tabId) {
+        document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
+        document.getElementById(tabId).style.display = 'block';
+        
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
     }
 
-    // Function to calculate for SMP
-    function calculateSMP() {
-        const systemCost = parseFloat(document.getElementById('smpSystemCost').value) || 0;
-        const adders = parseFloat(document.getElementById('smpAdders').value) || 0;
-        const systemSize = 10;  // Adjust as needed
-        const netPpw = systemCost / systemSize;
-        const commission = (systemCost - adders) * 0.35;
-
-        document.getElementById('smpResult').innerHTML = `
-            <p>Net PPW: $${netPpw.toFixed(2)}</p>
-            <p>System Cost After Adders: $${(systemCost - adders).toFixed(2)}</p>
-            <p>Commission: $${commission.toFixed(2)}</p>
-        `;
+    // Function to update total
+    function updateTotal(tabId) {
+        const select = document.getElementById(`${tabId}-options`);
+        let total = 0;
+        for (const option of select.selectedOptions) {
+            total += parseFloat(option.value);
+        }
+        document.getElementById('total').innerText = `Batteries & Adders Total: $${total.toFixed(2)}`;
     }
 
-    // Function to calculate for Empower
-    function calculateEmpower() {
-        const systemCost = parseFloat(document.getElementById('empowerSystemCost').value) || 0;
-        const adders = parseFloat(document.getElementById('empowerAdders').value) || 0;
-        const systemSize = 12.3;  // Example system size, adjust if needed
-        const netPpw = systemCost / systemSize;
-        const commission = (systemCost - adders) * 0.28;
-
-        document.getElementById('empowerResult').innerHTML = `
-            <p>Net PPW: $${netPpw.toFixed(2)}</p>
-            <p>System Cost After Adders: $${(systemCost - adders).toFixed(2)}</p>
-            <p>Commission: $${commission.toFixed(2)}</p>
-        `;
-    }
-
-    // Additional functions for other sections, like 2.9%, 3.5%, 3.9%, LOAN, and HDM
+    // Initialize with SMP tab open
+    showTab('smp');
 </script>
 
 </body>
