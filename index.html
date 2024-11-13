@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 600px;
+            max-width: 700px;
             margin: auto;
             padding: 20px;
             background-color: #f4f4f4;
@@ -57,21 +57,22 @@
             background-color: #0073e6;
             color: white;
         }
-        .dropdown-container {
-            display: none;
-        }
-        .dropdown-container.active {
-            display: block;
-        }
         .checkbox-group {
             display: flex;
             flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
         }
         .checkbox-group label {
-            width: 100%;
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
+            background-color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -98,35 +99,35 @@
     </div>
 
     <!-- SMP Tab Checkbox Group -->
-    <div id="SMP" class="dropdown-container active checkbox-group">
+    <div id="SMP" class="checkbox-group">
         <label><input type="checkbox" value="2500" onchange="updateAddersBattery()"> MPU - 2500</label>
         <label><input type="checkbox" value="5000" onchange="updateAddersBattery()"> Span MPU - 5000</label>
         <label><input type="checkbox" value="750" onchange="updateAddersBattery()"> D-rate - 750</label>
-        <!-- Add the remaining SMP options as checkboxes -->
+        <!-- Add all remaining SMP options as checkboxes here -->
     </div>
 
     <!-- EmPower Tab Checkbox Group -->
-    <div id="EmPower" class="dropdown-container checkbox-group">
+    <div id="EmPower" class="checkbox-group" style="display: none;">
         <label><input type="checkbox" value="5000" onchange="updateAddersBattery()"> 5p - 5000</label>
         <label><input type="checkbox" value="9000" onchange="updateAddersBattery()"> 10p - 9000</label>
         <label><input type="checkbox" value="13000" onchange="updateAddersBattery()"> 15p - 13000</label>
-        <!-- Add the remaining EmPower options as checkboxes -->
+        <!-- Add all remaining EmPower options as checkboxes here -->
     </div>
 
     <!-- Trust Tab Checkbox Group -->
-    <div id="Trust" class="dropdown-container checkbox-group">
+    <div id="Trust" class="checkbox-group" style="display: none;">
         <label><input type="checkbox" value="9000" onchange="updateAddersBattery()"> Tesla Power Wall 3 - 9000</label>
         <label><input type="checkbox" value="8500" onchange="updateAddersBattery()"> Additional Power Wall 3 - 8500</label>
         <label><input type="checkbox" value="2800" onchange="updateAddersBattery()"> MPU - 2800</label>
-        <!-- Add the remaining Trust options as checkboxes -->
+        <!-- Add all remaining Trust options as checkboxes here -->
     </div>
 
     <!-- Freedom Forever Tab Checkbox Group -->
-    <div id="FreedomForever" class="dropdown-container checkbox-group">
+    <div id="FreedomForever" class="checkbox-group" style="display: none;">
         <label><input type="checkbox" value="5000" onchange="updateAddersBattery()"> 5P <= 4kw no backup - 5000</label>
         <label><input type="checkbox" value="9750" onchange="updateAddersBattery()"> 10P <= 4kw no backup - 9750</label>
         <label><input type="checkbox" value="9000" onchange="updateAddersBattery()"> 5P > 4kw no backup - 9000</label>
-        <!-- Add the remaining Freedom Forever options as checkboxes -->
+        <!-- Add all remaining Freedom Forever options as checkboxes here -->
     </div>
 
     <button onclick="calculateCommission()">Calculate Commission</button>
@@ -135,21 +136,24 @@
 
     <script>
         function showTab(tabId) {
-            const tabs = document.querySelectorAll(".tab");
-            const dropdowns = document.querySelectorAll(".dropdown-container");
+            // Hide all checkbox groups
+            const allTabs = document.querySelectorAll('.checkbox-group');
+            allTabs.forEach(tab => tab.style.display = 'none');
+            
+            // Set all tabs as inactive
+            const allTabButtons = document.querySelectorAll('.tab');
+            allTabButtons.forEach(button => button.classList.remove('active'));
 
-            tabs.forEach(tab => tab.classList.remove("active"));
-            dropdowns.forEach(dropdown => dropdown.classList.remove("active"));
-
-            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add("active");
-            document.getElementById(tabId).classList.add("active");
+            // Show the selected tab
+            document.getElementById(tabId).style.display = 'flex';
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
         }
 
         function updateAddersBattery() {
             let total = 0;
-            const activeCheckboxes = document.querySelectorAll(".dropdown-container.active input[type='checkbox']:checked");
-            activeCheckboxes.forEach(checkbox => {
-                total += parseFloat(checkbox.value);
+            const selectedOptions = document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked');
+            selectedOptions.forEach(option => {
+                total += parseFloat(option.value);
             });
             document.getElementById("addersBattery").value = total;
         }
